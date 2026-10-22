@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Урок 19. Действия с многозначными числами — 3 класс</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/css/neucha@latest/index.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/css/nunito@latest/index.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/css/nunito@latest/700.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/css/nunito@latest/800.css">
+<style>
+:root{--blue:#cfe0ef;--blue2:#8fb4d2;--peach:#ffd8b6;--peach2:#f7b98a;--paper:#fffdf6;--ink:#33424e;--line:#d3e5f2;--red:#c95b57;--redL:#e8a5a2;--green:#5f9e6b;--greenL:#ddefdd;--gold:#e8b64c;}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0}
+body{font-family:'Nunito','Segoe UI',system-ui,sans-serif;color:var(--ink);font-size:19px;
+background:radial-gradient(1100px 600px at 90% -10%,#ffe3c9b0,transparent 60%),radial-gradient(900px 520px at -10% 30%,#cfe3f5b0,transparent 60%),radial-gradient(1000px 700px at 50% 110%,#f4ead8cc,transparent 60%),#f7f3ea;
+min-height:100vh;padding:86px 12px 110px;}
+#topbar{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;gap:12px;background:linear-gradient(#a8c6e2,#8fb4d2);padding:10px 16px;box-shadow:0 3px 10px #0003;border-bottom:3px solid #6f97b8;}
+#topbar .tbLeft{font-family:'Neucha',cursive;font-size:22px;background:#fff;border-radius:8px;padding:2px 12px;box-shadow:0 2px 0 #6f97b8;}
+#topbar .tbTitle{flex:1;text-align:center;color:#fff;font-weight:800;font-size:17px;text-shadow:0 1px 2px #0004;}
+#topbar .tbRight span{background:#fff;border-radius:10px;padding:3px 10px;font-weight:800;font-size:15px;}
+#progress{position:fixed;top:60px;left:0;right:0;height:10px;background:#e8dfcd;z-index:50;box-shadow:inset 0 2px 4px #0002;}
+#progressFill{height:100%;width:0%;background:linear-gradient(90deg,var(--peach2),var(--gold));transition:width .4s;}
+#progressPencil{position:absolute;top:-9px;left:0%;transform:translateX(-50%);font-size:20px;transition:left .4s;}
+.screen{display:none;max-width:1020px;margin:0 auto;}
+.screen.active{display:block;animation:fadeUp .45s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.sheet{position:relative;background:var(--paper);background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:26px 26px;border:1px solid #e3d9c6;border-radius:6px;box-shadow:0 12px 26px rgba(70,60,40,.18),0 2px 6px rgba(70,60,40,.12);padding:30px 26px 26px 76px;margin:22px auto;}
+.sheet::before{content:"";position:absolute;left:56px;top:0;bottom:0;width:2px;background:var(--redL);opacity:.8;}
+.tape{position:absolute;top:-13px;left:50%;transform:translateX(-50%) rotate(-2deg);width:150px;height:28px;background:#efe5c9d9;border-left:2px dashed #d8caa8;border-right:2px dashed #d8caa8;box-shadow:0 2px 4px #0002;}
+h2{font-family:'Neucha',cursive;font-size:31px;margin:4px 0 10px;color:#2c4a63;border-bottom:3px solid var(--peach);display:inline-block;padding-bottom:2px;}
+.task{font-size:20px;margin:6px 0 14px;}
+.hint{color:#7a8894;font-size:16px}
+.boardWrap{max-width:880px;margin:26px auto 6px;padding:0 8px;}
+.board{background:radial-gradient(120% 120% at 30% 20%,#3a6b5c,#2c564a 70%);border:12px solid #b98a5a;outline:3px solid #8a6543;border-radius:10px;box-shadow:inset 0 0 60px #0007,0 16px 34px #0004;color:#f3f7ee;font-family:'Neucha',cursive;text-align:center;padding:32px 22px 38px;}
+.board .chalkDate{font-size:44px;letter-spacing:2px;text-shadow:0 0 6px #ffffff55;}
+.board h1{font-size:34px;margin:12px 0 6px;text-shadow:0 0 5px #ffffff44;line-height:1.25;}
+.board p{margin:2px;font-size:21px;color:#ffe9c9;}
+.board .chalkNote{margin-top:12px;font-size:19px;color:#cfe8d8;}
+.boardTray{width:70%;margin:-6px auto 0;height:16px;background:#a97c4f;border-radius:4px;box-shadow:0 4px 8px #0004;display:flex;gap:14px;align-items:center;justify-content:center;font-size:14px;}
+.btn{font:800 20px 'Nunito',sans-serif;color:var(--ink);padding:12px 26px;border-radius:14px;border:2px solid var(--ink);background:#fff;box-shadow:0 4px 0 var(--ink);cursor:pointer;transition:transform .1s,box-shadow .1s;}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 var(--ink)}
+.btn.primary{background:var(--peach)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.small{padding:8px 18px;font-size:18px}
+#bottomNav{position:fixed;left:0;right:0;bottom:0;z-index:50;display:flex;justify-content:center;gap:16px;padding:14px 12px calc(14px + env(safe-area-inset-bottom));background:linear-gradient(#f4ead800,#f4ead8ee 40%);}
+#bottomNav.hide{display:none}
+.theoryBox{background:#eaf3fb;border:2px solid var(--blue2);border-radius:14px;padding:16px 20px;font-size:20px;}
+.theoryBox b{color:#2c4a63}
+.theoryBox .ex{color:#566573;font-size:18px}
+.qblock{background:#ffffffb8;border:2px solid #e2d7c2;border-radius:14px;padding:14px 16px;margin:12px 0;}
+.qblock .qtext{font-size:21px;font-weight:700;margin-bottom:10px;}
+.opts{display:flex;flex-wrap:wrap;gap:10px;}
+.opt{font:700 19px 'Nunito',sans-serif;padding:10px 18px;border-radius:12px;border:2px solid var(--blue2);background:#fff;cursor:pointer;box-shadow:0 3px 0 var(--blue2);}
+.opt.yes{background:var(--greenL);border-color:var(--green);color:#2c5e39;box-shadow:0 3px 0 var(--green);}
+.opt.no{background:#fdeaea;border-color:var(--red);color:var(--red);animation:shake .4s;}
+.qblock.solved{border-color:var(--green);background:#f2faf2;}
+@keyframes shake{20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+.shake{animation:shake .4s}
+.probBlock{background:#ffffffb8;border:2px solid #e2d7c2;border-radius:14px;padding:14px 16px;margin:12px 0;}
+.probBlock.okBlock{border-color:var(--green);background:#f2faf2;}
+.probText{font-size:20px;font-weight:700;margin-bottom:10px;}
+.probRow{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:6px 0;}
+.probRow input{font:800 22px 'Nunito';width:170px;padding:6px;text-align:center;border:3px solid var(--blue2);border-radius:12px;background:#fff;}
+.probRow input.tiny{width:100px;}
+.probRow input.good{border-color:var(--green);background:var(--greenL);color:#2c5e39;}
+.probRow input.bad{border-color:var(--red);background:#fdeaea;animation:shake .4s;}
+.probHint{margin-top:8px;color:#b9892f;font-weight:700;font-size:17px;}
+.unitLbl{font-weight:800;color:#2c4a63;}
+/* столбики с отметками займа */
+.colGrid{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin:10px 0;}
+.col{display:inline-block;text-align:center;font:800 26px/1.3 'Nunito',sans-serif;background:#fff;border:2px solid #bcd9f0;border-radius:12px;padding:10px 16px;}
+.col .d{display:inline-block;width:26px;text-align:center;}
+.col .marks .d{height:16px;line-height:16px;font-size:13px;color:var(--red);}
+.col .l2 .x{color:var(--red);}
+.col hr{border:none;border-top:2px solid var(--ink);margin:2px 0;}
+.refChips{display:flex;flex-wrap:wrap;gap:10px;margin:8px 0 4px;}
+.refChip{font:700 17px 'Nunito';border:2px solid var(--blue2);background:#fff;border-radius:20px;padding:8px 16px;cursor:pointer;}
+.refChip.on{background:var(--blue);border-color:var(--blue2);box-shadow:inset 0 2px 4px #0002;}
+.moodRow{display:flex;gap:14px;margin-top:10px;flex-wrap:wrap;}
+.mood{font-size:40px;background:#fff;border:3px solid #e2d7c2;border-radius:16px;padding:10px 16px;cursor:pointer;}
+.mood.sel{border-color:var(--gold);background:#fff8ef;transform:scale(1.1);}
+.mood small{display:block;font:700 14px 'Nunito';color:#7a8894;}
+.finalRow{display:flex;gap:26px;align-items:center;flex-wrap:wrap;}
+.stampCircle{min-width:110px;height:110px;padding:0 14px;border:4px solid var(--red);border-radius:50%;display:flex;align-items:center;justify-content:center;font:400 30px 'Neucha',cursive;color:var(--red);transform:rotate(-8deg);background:#fff;text-align:center;}
+#toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%) translateY(20px);background:#2c4a63;color:#fff;font-weight:800;padding:12px 22px;border-radius:14px;opacity:0;pointer-events:none;transition:.3s;z-index:99;max-width:88%;text-align:center;}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+#toast.good{background:var(--green)}
+#toast.bad{background:var(--red)}
+@media (max-width:760px){
+body{font-size:17px;padding-top:80px}
+.sheet{padding:24px 14px 18px 48px}
+.sheet::before{left:32px}
+.board .chalkDate{font-size:34px}
+.board h1{font-size:25px}
+#topbar .tbTitle{font-size:12px}
+h2{font-size:25px}
+.probRow input{width:130px;font-size:19px}
+.probRow input.tiny{width:84px}
+.col{font-size:21px}
+.col .d{width:21px}
+}
+</style>
+</head>
+<body>
+<header id="topbar">
+<div class="tbLeft">Урок 19</div>
+<div class="tbTitle">Действия с многозначными числами</div>
+<div class="tbRight"><span id="pageChip">1/9</span></div>
+</header>
+<div id="progress"><div id="progressFill"></div><span id="progressPencil">✏️</span></div>
+<main id="app">
+
+<section class="screen active" id="s0">
+<div class="boardWrap">
+<div class="board">
+<div class="chalkDate">23 октября</div>
+<h1>Урок 19. Действия с многозначными числами</h1>
+<p>Математика • 3 «А» класс</p>
+<div class="chalkNote">Удобные способы, столбики с займом и задачи ✏️</div>
+</div>
+<div class="boardTray">🖍️ ✏️</div>
+</div>
+<div class="sheet">
+<span class="tape"></span>
+<h2>📚 План урока</h2>
+<ol class="task">
+<li>Вычисли удобным способом и вспомни свойства сложения.</li>
+<li>Ещё четыре примера удобным способом.</li>
+<li>Вырази число 2 003 916 в заданных единицах счёта.</li>
+<li>Объясни решение столбиков с займом через разряды.</li>
+<li>Составь программу действий. Что замечаешь?</li>
+<li>Задача про три школы.</li>
+<li>Рефлексия.</li>
+</ol>
+<p class="hint">Листать можно кнопками «Далее/Назад», стрелками ← → или свайпами — в любой момент!</p>
+</div>
+</section>
+
+<section class="screen" id="s1">
+<div class="sheet"><span class="tape"></span>
+<h2>1. Удобным способом ⚡</h2>
+<p class="task">(Устно.) Вычисли удобным способом и впиши ответ.</p>
+<div id="task1"></div>
+<div class="theoryBox">
+<b>Для многозначных чисел сохраняются все изученные ранее свойства и правила действий с числами</b> (правила порядка действий, свойства арифметических действий и т. д.).
+</div>
+<div id="q1"></div>
+</div>
+</section>
+
+<section class="screen" id="s2">
+<div class="sheet"><span class="tape"></span>
+<h2>2. Ещё удобным способом 🧠</h2>
+<p class="task">(Устно.) Вычисли удобным способом. Обоснуй свой ответ: сгруппируй слагаемые так, чтобы получились круглые числа.</p>
+<div id="task2"></div>
+</div>
+</section>
+
+<section class="screen" id="s3">
+<div class="sheet"><span class="tape"></span>
+<h2>3. Единицы счёта 🔢</h2>
+<p class="task">Вырази число 2 003 916 в указанных единицах счёта.</p>
+<div id="task3"></div>
+</div>
+</section>
+
+<section class="screen" id="s4">
+<div class="sheet"><span class="tape"></span>
+<h2>4. Объясни решение примеров ✍️</h2>
+<p class="task">В столбиках над разрядами стоят отметки займа (точка и цифры 9, 10). Рассмотри и объясни решение.</p>
+<div class="colGrid">
+<div class="col">
+<div class="marks"><span class="d"></span><span class="d">·</span><span class="d">9</span><span class="d">9</span><span class="d">10</span></div>
+<div><span class="d"></span><span class="d">1</span><span class="d">0</span><span class="d">0</span><span class="d">2</span></div>
+<div class="l2"><span class="d x">−</span><span class="d"></span><span class="d">3</span><span class="d">4</span><span class="d">8</span></div>
+<hr>
+<div><span class="d"></span><span class="d">6</span><span class="d">5</span><span class="d">4</span></div>
+</div>
+<div class="col">
+<div class="marks"><span class="d">·</span><span class="d">9</span><span class="d">9</span><span class="d">9</span><span class="d">9</span><span class="d">10</span></div>
+<div><span class="d">2</span><span class="d">0</span><span class="d">0</span><span class="d">0</span><span class="d">0</span><span class="d">0</span></div>
+<div class="l2"><span class="d x">−</span><span class="d"></span><span class="d">7</span><span class="d">3</span><span class="d">0</span><span class="d">4</span></div>
+<hr>
+<div><span class="d">1</span><span class="d">9</span><span class="d">2</span><span class="d">6</span><span class="d">9</span><span class="d">6</span></div>
+</div>
+<div class="col">
+<div class="marks"><span class="d">·</span><span class="d">10</span><span class="d">10</span><span class="d">·</span><span class="d">9</span><span class="d">9</span><span class="d">10</span></div>
+<div><span class="d">5</span><span class="d">2</span><span class="d">0</span><span class="d">7</span><span class="d">0</span><span class="d">0</span><span class="d">4</span></div>
+<div class="l2"><span class="d x">−</span><span class="d"></span><span class="d">3</span><span class="d">6</span><span class="d">2</span><span class="d">9</span><span class="d">4</span><span class="d">8</span></div>
+<hr>
+<div><span class="d">4</span><span class="d">8</span><span class="d">4</span><span class="d">4</span><span class="d">0</span><span class="d">5</span><span class="d">6</span></div>
+</div>
+</div>
+<div id="q4"></div>
+</div>
+</section>
+
+<section class="screen" id="s5">
+<div class="sheet"><span class="tape"></span>
+<h2>5. Программа действий 📋</h2>
+<p class="task">Составь программу действий. Что ты замечаешь?</p>
+<div class="theoryBox">
+1) a : (b − c) · d + k · (m : n)<br>
+2) a : b − c · (d + k · m) : n<br>
+3) a : (b − c · d) + k · m : n<br>
+4) (a : b − c) · d + k · (m : n)
+</div>
+<div id="q6"></div>
+</div>
+</section>
+
+<section class="screen" id="s6">
+<div class="sheet"><span class="tape"></span>
+<h2>6. Задача про три школы 🏫</h2>
+<p class="task">В трёх школах учится 3600 человек. В первой школе учится 1265 человек, а во второй — на 348 человек больше, чем в первой. Сколько учеников в третьей школе? На сколько учеников в третьей школе меньше, чем в первой?</p>
+<div id="task8"></div>
+</div>
+</section>
+
+<section class="screen" id="s7">
+<div class="sheet"><span class="tape"></span>
+<h2>7. Рефлексия 🌈</h2>
+<p class="task">Отметь, что ты повторил(а):</p>
+<div class="refChips" id="refKnow"></div>
+<p class="task">Что получилось:</p>
+<div class="refChips" id="refCan"></div>
+<p class="task">С каким настроением ты уходишь с урока?</p>
+<div class="moodRow" id="refMood"></div>
+</div>
+</section>
+
+<section class="screen" id="s8">
+<div class="sheet"><span class="tape"></span>
+<h2>Дневник урока 📔</h2>
+<div class="finalRow">
+<div class="stampCircle">Молодец!</div>
+<div>
+<p id="fText" style="font-size:24px;font-weight:800;margin:6px">Урок окончен! 🎉</p>
+<p id="fStats" style="margin:6px;color:#6b7a88"></p>
+<p class="hint">Можно вернуться «Назад» и повторить любое задание.</p>
+</div>
+</div>
+<p style="margin-top:18px"><button class="btn primary" id="restartBtn" type="button">🔁 Пройти ещё раз</button></p>
+</div>
+</section>
+
+</main>
+<nav id="bottomNav">
+<button id="backBtn" class="btn" type="button">← Назад</button>
+<button id="nextBtn" class="btn primary" type="button">Начать урок →</button>
+</nav>
+<div id="toast"></div>
+<script>
+"use strict";
+var $=function(s){return document.querySelector(s);};
+var $$=function(s){return Array.from(document.querySelectorAll(s));};
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+var current=0;
+var screens=$$('.screen');
+var done=new Array(screens.length).fill(false);
+var chosenMood='';
+var toastT=null;
+function toast(m,t){var e=$('#toast');e.textContent=m;e.className='show '+(t||'');clearTimeout(toastT);toastT=setTimeout(function(){e.className='';},2400);}
+function buildFinal(){
+  var completed=done.slice(1,7).filter(Boolean).length;
+  $('#fText').textContent=completed===6?'Урок окончен! Все задания выполнены! 🎉':'Урок окончен! 🎉';
+  $('#fStats').textContent='Выполнено заданий: '+completed+' / 6 · Настроение: '+(chosenMood||'—');
+}
+function updateNav(){
+  $('#pageChip').textContent=(current+1)+'/'+screens.length;
+  var p=current/(screens.length-1)*100;
+  $('#progressFill').style.width=p+'%';$('#progressPencil').style.left=p+'%';
+  $('#backBtn').disabled=(current===0);
+  if(current===screens.length-1){$('#bottomNav').classList.add('hide');return;}
+  $('#bottomNav').classList.remove('hide');
+  var nb=$('#nextBtn');
+  nb.textContent=current===0?'Начать урок →':(current===7?'Завершить урок ✔':'Далее →');
+  nb.disabled=false;
+}
+function show(i){
+  current=Math.max(0,Math.min(screens.length-1,i));
+  for(var idx=0;idx<screens.length;idx++){screens[idx].classList.toggle('active',idx===current);}
+  if(current===8){buildFinal();}
+  updateNav();window.scrollTo(0,0);
+}
+function setDone(i){if(done[i])return;done[i]=true;toast('✔ Задание выполнено!','good');updateNav();}
+function next(){show(current+1);}
+function prev(){show(current-1);}
+$('#nextBtn').addEventListener('click',function(){next();});
+$('#backBtn').addEventListener('click',function(){prev();});
+document.addEventListener('keydown',function(e){if(e.target&&e.target.tagName==='INPUT')return;if(e.key==='ArrowRight'){next();}if(e.key==='ArrowLeft'){prev();}});
+var swStart=null;
+$('#app').addEventListener('pointerdown',function(e){if(e.target.closest('input'))return;swStart={x:e.clientX,y:e.clientY};});
+$('#app').addEventListener('pointerup',function(e){if(!swStart)return;var dx=e.clientX-swStart.x,dy=e.clientY-swStart.y;swStart=null;if(Math.abs(dx)>70&&Math.abs(dy)<50){if(dx<0){next();}else{prev();}}});
+
+function renderMC(container,items,onComplete){
+  if(!container){return;}
+  var solved=0;
+  items.forEach(function(it){
+    var block=document.createElement('div');block.className='qblock';
+    var h=document.createElement('div');h.className='qtext';h.innerHTML=it.q;block.appendChild(h);
+    var row=document.createElement('div');row.className='opts';
+    shuffle(it.o).forEach(function(o){
+      var b=document.createElement('button');b.type='button';b.className='opt';b.innerHTML=o;
+      b.addEventListener('click',function(){
+        if(block.classList.contains('solved')){return;}
+        if(o===it.c){block.classList.add('solved');b.classList.add('yes');if(it.fb){setTimeout(function(){toast(it.fb,'good');},150);}solved++;if(solved===items.length){onComplete();}}
+        else{b.classList.add('no');setTimeout(function(){b.classList.remove('no');},700);}
+      });
+      row.appendChild(b);
+    });
+    block.appendChild(row);container.appendChild(block);
+  });
+}
+
+function makeInputBlock(host,title,fields,onOk){
+  var blk=document.createElement('div');blk.className='probBlock';
+  var html='<div class="probText">'+title+'</div><div class="probRow">';
+  fields.forEach(function(f,i){
+    html+='<span class="unitLbl">'+(f.lbl||'')+'</span><input inputmode="numeric" class="'+(f.tiny?'tiny':'')+'" data-i="'+i+'" placeholder="?">';
+  });
+  html+='<button class="btn small bCheck" type="button" style="margin-left:8px">Проверить</button></div>';
+  if(fields.some(function(f){return f.hint;})){html+='<div class="probHint" hidden></div>';}
+  blk.innerHTML=html;
+  host.appendChild(blk);
+  var inps=blk.querySelectorAll('input');
+  var hintEl=blk.querySelector('.probHint');
+  blk.querySelector('.bCheck').addEventListener('click',function(){
+    var ok=true;
+    inps.forEach(function(inp){
+      var i=parseInt(inp.dataset.i,10);
+      var v=parseInt(inp.value,10);
+      if(v===fields[i].v){inp.classList.add('good');inp.disabled=true;}
+      else{inp.classList.add('bad');ok=false;setTimeout(function(){inp.classList.remove('bad');},700);}
+    });
+    if(ok){blk.classList.add('okBlock');blk.querySelector('.bCheck').disabled=true;onOk();}
+    else{
+      var h=fields.filter(function(f){return f.hint;})[0];
+      if(h&&hintEl){hintEl.textContent='Подсказка: '+h.hint;hintEl.hidden=false;}
+      toast('Есть ошибка — пересчитай!','bad');
+    }
+  });
+  return blk;
+}
+
+/* ===== 1. удобным способом ===== */
+(function(){
+  var box=$('#task1'),doneCount=0,inpDone=false,mcDone=false;
+  function tryDone(){if(inpDone&&mcDone){setDone(1);}}
+  makeInputBlock(box,'23 + 24 + 25 + 26 + 27 =',[{lbl:'',v:125,hint:'Среднее число 25: 25 · 5 = 125 (пары 23+27 и 24+26 дают по 50).'}],function(){doneCount++;inpDone=true;tryDone();toast('Верно! 25 · 5 = 125','good');});
+  makeInputBlock(box,'(36 + 25) + 75 + (64 + 100) =',[{lbl:'',v:300,hint:'Сгруппируй: (36+64) + (25+75) + 100 = 100+100+100.'}],function(){doneCount++;inpDone=true;tryDone();toast('Верно! Три сотни = 300','good');});
+  renderMC($('#q1'),[
+    {q:'Какие свойства сложения помогли упростить вычисления?',o:['переместительное и сочетательное','только переместительное','свойства вычитания'],c:'переместительное и сочетательное',fb:'Мы меняли местами и группировали слагаемые.'},
+    {q:'Можно ли распространить эти свойства на многозначные числа? Почему?',o:['да: для многозначных чисел сохраняются все изученные свойства действий','нет: свойства работают только до 100','да, но только для сложения'],c:'да: для многозначных чисел сохраняются все изученные свойства действий'}
+  ],function(){mcDone=true;tryDone();});
+})();
+
+/* ===== 2. ещё удобным способом ===== */
+(function(){
+  var EX=[
+    {t:'а) 71 300 + 2996 + 4 + 700',v:75000,hint:'(71 300 + 700) + (2996 + 4) = 72 000 + 3 000.'},
+    {t:'б) 9998 + 405 + 2 + 95 + 2500',v:13000,hint:'(9998 + 2) + (405 + 95) + 2500 = 10 000 + 500 + 2500.'},
+    {t:'в) (18 607 + 458) − 17 607',v:1458,hint:'(18 607 − 17 607) + 458 = 1000 + 458.'},
+    {t:'г) 32 584 − (32 564 + 19)',v:1,hint:'32 584 − 32 564 = 20; 20 − 19 = 1.'}
+  ];
+  var box=$('#task2'),doneCount=0;
+  EX.forEach(function(p){
+    makeInputBlock(box,p.t+' =',[{lbl:'',v:p.v,hint:p.hint}],function(){
+      doneCount++;if(doneCount===EX.length){setDone(2);toast('Все примеры решены удобным способом! ⚡','good');}
+      else{toast('Верно! Осталось: '+(EX.length-doneCount),'good');}
+    });
+  });
+})();
+
+/* ===== 3. единицы счёта ===== */
+(function(){
+  var box=$('#task3'),doneCount=0;
+  makeInputBlock(box,'а) 2 003 916 в миллионах, тысячах и единицах',[
+    {lbl:'млн.:',v:2,tiny:true},{lbl:'тыс.:',v:3,tiny:true},{lbl:'ед.:',v:916}
+  ],function(){doneCount++;check3();toast('Верно: 2 млн. 3 тыс. 916 ед.','good');});
+  makeInputBlock(box,'б) 2 003 916 в десятках тысяч, сотнях и единицах',[
+    {lbl:'дес. тыс.:',v:200},{lbl:'сот.:',v:39,tiny:true},{lbl:'ед.:',v:16,tiny:true}
+  ],function(){doneCount++;check3();toast('Верно: 200 дес. тыс. 39 сот. 16 ед.','good');});
+  function check3(){if(doneCount===2){setDone(3);}}
+})();
+
+/* ===== 4. объясни столбики ===== */
+renderMC($('#q4'),[
+ {q:'Что означают отметки (·, 9, 10) над разрядами?',o:['разряд занял единицу у соседа слева: после займа там остаётся 9, а у правого соседа — 10','это номера разрядов','так записывают ответ'],c:'разряд занял единицу у соседа слева: после займа там остаётся 9, а у правого соседа — 10',fb:'Займ через разряды с нулями: 0 превращается в 9.'},
+ {q:'1002 − 348 = ?',o:['654','664','746'],c:'654'},
+ {q:'Проверь второй пример сложением: 192 696 + 7 304 = …',o:['200 000','199 996','200 006'],c:'200 000',fb:'Проверка вычитания сложением сошлась!'},
+ {q:'Третий пример: 5 207 004 − 362 948 = …',o:['4 844 056','4 844 066','1 577 56'],c:'4 844 056'}
+],function(){setDone(4);});
+
+/* ===== 5. программа действий ===== */
+renderMC($('#q6'),[
+ {q:'Что ты замечаешь во всех четырёх выражениях?',o:['составлены из одних и тех же букв и знаков, но порядок действий разный','все они равны','в них разные буквы'],c:'составлены из одних и тех же букв и знаков, но порядок действий разный',fb:'Поэтому и значения будут разные!'},
+ {q:'Какие действия выполняются первыми в примере 1) a : (b − c) · d + k · (m : n)?',o:['действия в скобках: (b − c) и (m : n)','деление a : b','сложение'],c:'действия в скобках: (b − c) и (m : n)'},
+ {q:'Какое действие выполняется последним в примере 2) a : b − c · (d + k · m) : n?',o:['вычитание','деление','умножение'],c:'вычитание'},
+ {q:'Какое действие выполняется последним в примере 4) (a : b − c) · d + k · (m : n)?',o:['сложение','умножение','деление'],c:'сложение'}
+],function(){setDone(5);});
+
+/* ===== 6. задача про школы ===== */
+(function(){
+  var box=$('#task8'),doneCount=0;
+  makeInputBlock(box,'Сколько учеников во второй школе?',[{lbl:'',v:1613,hint:'1265 + 348 = 1613.'}],function(){doneCount++;chk();toast('Верно: во второй школе 1613 учеников','good');});
+  makeInputBlock(box,'Сколько учеников в третьей школе?',[{lbl:'',v:722,hint:'3600 − 1265 − 1613 = 722.'}],function(){doneCount++;chk();toast('Верно: в третьей школе 722 ученика','good');});
+  makeInputBlock(box,'На сколько учеников в третьей школе меньше, чем в первой?',[{lbl:'',v:543,hint:'1265 − 722 = 543.'}],function(){doneCount++;chk();toast('Верно: на 543 ученика меньше','good');});
+  function chk(){if(doneCount===3){setDone(6);}}
+})();
+
+/* ===== 7. рефлексия ===== */
+(function(){
+  var know=['свойства сложения работают и для многозначных чисел','удобные способы вычислений','занят через разряды при вычитании столбиком','порядок действий в выражениях со скобками'];
+  var can=['вычислять удобным способом','объяснять столбики с займом','выражать числа в заданных единицах счёта','решать задачи в три действия'];
+  function fill(arr,wrap){arr.forEach(function(t){var b=document.createElement('button');b.type='button';b.className='refChip';b.textContent=t;b.addEventListener('click',function(){b.classList.toggle('on');});wrap.appendChild(b);});}
+  fill(know,$('#refKnow'));fill(can,$('#refCan'));
+  [['😄','отличное'],['🙂','хорошее'],['😐','среднее'],['😟','грустное']].forEach(function(m){
+    var b=document.createElement('button');b.type='button';b.className='mood';b.innerHTML=m[0]+'<small>'+m[1]+'</small>';
+    b.addEventListener('click',function(){$$('#refMood .mood').forEach(function(x){x.classList.remove('sel');});b.classList.add('sel');chosenMood=m[0]+' '+m[1];setDone(7);});
+    $('#refMood').appendChild(b);
+  });
+})();
+$('#restartBtn').addEventListener('click',function(){location.reload();});
+updateNav();
+</script>
+</body>
+</html>
